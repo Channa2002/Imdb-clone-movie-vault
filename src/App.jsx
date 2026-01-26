@@ -28,3 +28,6 @@ function App() {
 }
 
 export default App;
+
+
+// https://api.themoviedb.org/3/movie/popular?api_key=2854d75e0f18f45b2475cb0d700c78be&language=en-US&page=2
