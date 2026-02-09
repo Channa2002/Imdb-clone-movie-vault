@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 
-function WatchList() {
+function WatchList({ watchList }) {
+  const [search, setSearch] = useState("");
+  function handleDelete(movieObj) {
+   let filteredWatchList = watchList.filter((movie) => {
+      return movie.id != movieObj;
+   })
+   return filteredWatchList;
+  }
+
+  function handleSearch(e) {
+   setSearch(e.target.value);
+  }
   return (
     <>
       <div className="flex flex-wrap gap-4 items-center justify-center my-4">
@@ -16,6 +27,8 @@ function WatchList() {
           type="text"
           placeholder="Search for movies"
           className="h-[3rem] w-[18rem] text-xl bg-gray- rounded-xl border bg-gray-200 outline-none p-4 "
+          value={search}
+          onChange={handleSearch}
         />
       </div>
 
@@ -31,53 +44,26 @@ function WatchList() {
           </thead>
 
           <tbody>
-            <tr className="border-b-2">
-              <td className="flex items-center px-6 py-4">
-                <img
-                  className="w-[6rem] h-[6rem]"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKgPVGkC93VjBY6PfXVamhw96g0nGnD9wX7g&s"
-                  alt=""
-                />
-                <div className="mx-10">The Salar</div>
-              </td>
-              <td>8.5</td>
-              <td>9033</td>
-              <td>Action</td>
+            {watchList.filter((moviesObj) => {
+              return moviesObj.title.toLowerCase().includes(search.toLocaleLowerCase())
+            }).map((movieObj) => {
+              return <tr className="border-b-2">
+                  <td className="flex items-center px-6 py-4">
+                    <img
+                      className="w-[6rem] h-[6rem]"
+                      src = {`https://image.tmdb.org/t/p/original/${movieObj.poster_path}`}
+                      alt=""
+                    />
+                    <div className="mx-10">{movieObj.original_title}</div>
+                  </td>
+                  <td>{movieObj.vote_average}</td>
+                  <td>{movieObj.vote_count}</td>
+                  <td>Action</td>
 
-              <td className="text-red-800">Delete</td>
-            </tr>
-
-            <tr className="border-b-2">
-              <td className="flex items-center px-6 py-4">
-                <img
-                  className="w-[6rem] h-[6rem]"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKgPVGkC93VjBY6PfXVamhw96g0nGnD9wX7g&s"
-                  alt=""
-                />
-                <div className="mx-10">The Salar</div>
-              </td>
-              <td>8.5</td>
-              <td>9033</td>
-              <td>Action</td>
-
-              <td className="text-red-800">Delete</td>
-            </tr>
-
-            <tr className="border-b-2">
-              <td className="flex items-center px-6 py-4">
-                <img
-                  className="w-[6rem] h-[6rem]"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKgPVGkC93VjBY6PfXVamhw96g0nGnD9wX7g&s"
-                  alt=""
-                />
-                <div className="mx-10">The Salar</div>
-              </td>
-              <td>8.5</td>
-              <td>9033</td>
-              <td>Action</td>
-
-              <td className="text-red-800">Delete</td>
-            </tr>
+                  <td className="text-red-800" onClick={handleDelete}>Delete</td>
+                </tr>
+              
+            })}
           </tbody>
         </table>
       </div>
